@@ -1,0 +1,59 @@
+{
+    "author" : "Chumakov Rustam",
+
+    "input" : {
+        "file" : "input/rec_00600.tif",
+        "folder" : "input/"
+    },
+
+    "output" : {
+        "folder" : "output/session_1", 
+        "format" : "PNG"
+    },
+
+    "preprocessing" : {
+        "operations_queue" : [
+            {
+                "add_gauss_noise" : [0.04]
+            },
+            {
+                "box_blur" : []
+            }
+        ], 
+        "PSNR" : true,
+        "SSIM" : true
+    }, 
+
+    "denoising" : {
+
+
+            "stage_2" :
+            {
+                "method_type" : "classical",
+                "method_name" : "non_local_means",
+                "params" : [11, 11, 0.1, true, 0.04], 
+                "PSNR" : true,
+                "SSIM" : true
+            },    
+            "stage_3" :
+            {
+                "method_type" : "deep_learning",
+                "use_pretrained_model" : true,
+                "method_name" : "gaussian_filter",
+                
+                "PSNR" : true,
+                "SSIM" : true
+            }   
+    },
+
+    "postprocessing" : {
+        "operations_queue" : [
+            {
+                "sharpen" : []
+            },
+            {
+                "change_brightness" : [-30]
+            }
+        ]
+    }
+}
